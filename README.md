@@ -1,0 +1,1 @@
+# auxiliador-de-texto
