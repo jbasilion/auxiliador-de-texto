@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Texto que se apaga</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            text-align: center;
+        }
+        #texto {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        #progresso {
+            width: 100%;
+            background-color: #ddd;
+            height: 20px;
+            margin-top: 20px;
+        }
+        #barra {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Texto que se apaga</h1>
+    <textarea id="inputTexto" rows="6" cols="60" placeholder="Cole seu texto aqui..."></textarea><br>
+    <button onclick="iniciar()">Iniciar</button>
+
+    <div id="texto"></div>
+
+    <div id="progresso">
+        <div id="barra"></div>
+    </div>
+
+    <button onclick="pausar()">Pausar</button>
+    <button onclick="retomar()">Retomar</button>
+
+    <script>
+        let palavras = [];
+        let intervalo;
+        let indice = 0;
+        let pausado = false;
+
+        function iniciar() {
+            const input = document.getElementById('inputTexto').value.trim();
+            palavras = input.split(/\s+/);
+            indice = 0;
+            document.getElementById('texto').innerText = input;
+            atualizarBarra();
+            pausado = false;
+
+            if(intervalo) clearInterval(intervalo);
+            intervalo = setInterval(apagarPalavra, 5000);
+        }
+
+        function apagarPalavra() {
+            if (pausado) return;
+
+            if (indice < palavras.length) {
+                palavras[indice] = '_____';
+                document.getElementById('texto').innerText = palavras.join(' ');
+                indice++;
+                atualizarBarra();
+            } else {
+                clearInterval(intervalo);
+            }
+        }
+
+        function atualizarBarra() {
+            const percentual = (indice / palavras.length) * 100;
+            document.getElementById('barra').style.width = percentual + '%';
+        }
+
+        function pausar() {
+            pausado = true;
+        }
+
+        function retomar() {
+            pausado = false;
+        }
+    </script>
+
+</body>
+</html>
